@@ -1,0 +1,46 @@
+#!/bin/bash
+# Modo de uso: copia o mueve este script a /usr/bin o /usr/local/bin y desde el directorio donde se encuentre la copia de un repo git, ejecútalo de esta manera:
+# upgit
+
+# Guardamos los ficheros en una variable
+MYVAR=$(ls)
+
+# Comprobamos si el directorio en el que estamos es de un repositorio git
+if [ ! -d '.git' ]; then
+	echo 'Esta carpeta no contiene un repositorio Git'
+	echo 'Creando un nuevo repositorio'
+	echo 'Introduce el nombre de usuario'
+	read varuser
+	echo 'Introduce el nombre del repositorio'
+	read varrepo
+	touch README.md
+	git init
+	git add README.md
+	git commit -m "first commit"
+	git remote add origin https://github.com/$varuser/$varrepo.git
+	git push -u origin master
+	git add $MYVAR
+	git commit -m "first commit 2"
+	git push -u origin master
+	exit -1
+fi
+# Ahora comprobamos en esa variable hay ficheros
+if [ $MYVAR == 0 ]; then
+	echo "UpToGit: ¡Error! No se le a pasado ningún parámetro"
+	echo "uptogit fichero1 fichero2 ... ficheroN"
+	exit -1
+else
+	# Elimina la cache por si se borra una carpeta de raiz para que en el repositorio de git la borre
+	git rm -r --cached .
+	# Si llegamos hasta aquí, indicamos a Git los archivos a subir
+	git add $MYVAR
+	
+	# Esto nos pedira el mensaje del commit
+	echo "Introduce el mensaje del commit:"
+	read TXT
+	git commit -m "$TXT"
+	
+	# Y terminamos subiendo los archivos
+	git push origin master
+
+fi
