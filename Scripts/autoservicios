@@ -4,7 +4,6 @@
 # preins
 
 # Instalar  apache mysql php phpmyadmin coger la base de datos de github e introducira directamente a la base de datos
-
 # Paso 1: Actualizamos el sistema operativo
 sudo apt-get update
 # Paso 2: Instalar Apache, MySQL, PHP
@@ -15,29 +14,11 @@ sudo service apache2 restart
 sudo apt-get install git
 sudo apt-get install nano
 sudo apt-get update
-# Paso 4: Crear una base de datos con un usuario
-echo 'Introduce el nombre de la base de datos'
-read namebd
-mysql -u root -p
-CREATE DATABASE $namebd;
-# Paso 5: Descargar de moodle e instalar BD
-cd /opt
-sudo git clone https://github.com/davidfc666/Sqlrubrica.git
-cd
-mysql -u root -p $namebd < /opt/Sqlrubrica/Rubrica2_0.sql
-# Paso 6: Instalar PHPMYADMIN - Sin Completar
+# Paso 4: Instalar PHPMYADMIN y configuracion.
 sudo apt-get install phpmyadmin
 cd /etc/apache2
-sudo nano apache2.conf
+sudo chmod 777 apache2.conf
+# El echo introduce su contenido en la ultima linea del archivo seleccionado.
+echo "include /etc/phpmyadmin/apache.conf" >> apache2.conf
+# sudo nano apache2.conf
 sudo service apache2 restart
-# Aqui he añadido una linea:
-# include /etc/phpmyadmin/apache.conf
-
-# Paso 7: Introducir programa
-exit
-sudo service mysql restart
-# Paso 6: Descargar la web y la añadimos en var/www/html
-sudo chmod -R 777 /var/www/html
-cd
-cd /var/www/html
-sudo git clone https://github.com/Grupo2G2/Reto.git
